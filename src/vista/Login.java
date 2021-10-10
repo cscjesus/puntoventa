@@ -167,7 +167,7 @@ public class Login extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Informática y programación");
 
-        jLabel9.setText("desc ubuntu");
+        jLabel9.setText("desc ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
