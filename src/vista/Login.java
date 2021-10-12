@@ -5,6 +5,9 @@
  */
 package vista;
 
+import javax.swing.JOptionPane;
+import modelo.LoginDAO;
+
 /**
  *
  * @author Lichi
@@ -18,7 +21,22 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-
+    public void validar(){
+        String correo = txtCorreo.getText();
+        String pass = String.valueOf(txtPass.getPassword());
+        if(!"".equals(correo)|| !"".equals(pass)){
+          modelo.Login  lg = new modelo.Login();
+          LoginDAO login = new LoginDAO();
+          
+          lg = login.log(correo, pass);
+          if(lg.getCorreo()!=null && lg.getPass()!=null){
+              Sistema sis = new Sistema();
+              sis.setVisible(true);
+              dispose();
+          }else
+              JOptionPane.showMessageDialog(null, "Error al iniciar");
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +77,10 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 255));
         jLabel4.setText("Password");
+
+        txtCorreo.setText("c@c.com");
+
+        txtPass.setText("123");
 
         jButton1.setBackground(new java.awt.Color(0, 0, 255));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -207,6 +229,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        validar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
