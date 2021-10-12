@@ -5,12 +5,17 @@
  */
 package vista;
 
+import javax.swing.JOptionPane;
+import modelo.Cliente;
+import modelo.ClienteDAO;
+
 /**
  *
  * @author Lichi
  */
 public class Sistema extends javax.swing.JFrame {
-
+    Cliente cl = new Cliente();
+    ClienteDAO cliente = new ClienteDAO();
     /**
      * Creates new form Sistema
      */
@@ -418,6 +423,11 @@ public class Sistema extends javax.swing.JFrame {
 
         btnGuardarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/GuardarTodo.png"))); // NOI18N
         btnGuardarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -722,8 +732,7 @@ public class Sistema extends javax.swing.JFrame {
                                 .addGap(0, 1, Short.MAX_VALUE))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(239, 239, 239)
-                        .addComponent(txtIdPro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtIdPro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -900,6 +909,28 @@ public class Sistema extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClienteActionPerformed
+        // TODO add your handling code here:
+        if(!txtDniCliente.getText().equals("")
+                || ! txtNombreCliente.getText().equals("")
+                || ! txtTelefonoCliente.getText().equals("")
+                || ! txtDireccionCliente.getText().equals("")
+                || ! txtRazonCliente.getText().equals("")
+                ){
+            cl.setDni(txtDniCliente.getText());
+            cl.setNombre(txtNombreCliente.getText());
+            cl.setTelefono(txtTelefonoCliente.getText());
+            cl.setDireccion(txtDireccionCliente.getText());
+            cl.setRazon(txtRazonCliente.getText());
+            cliente.registrarCliente(cl);
+            JOptionPane.showMessageDialog(null,"Clente registrado");
+            
+        }else{
+            
+            JOptionPane.showMessageDialog(null,"Los campos están vacíos");
+        }
+    }//GEN-LAST:event_btnGuardarClienteActionPerformed
 
     /**
      * @param args the command line arguments
