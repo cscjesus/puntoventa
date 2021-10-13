@@ -5,7 +5,9 @@
  */
 package vista;
 
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.Cliente;
 import modelo.ClienteDAO;
 
@@ -16,6 +18,7 @@ import modelo.ClienteDAO;
 public class Sistema extends javax.swing.JFrame {
     Cliente cl = new Cliente();
     ClienteDAO cliente = new ClienteDAO();
+    DefaultTableModel modelo= new DefaultTableModel();
     /**
      * Creates new form Sistema
      */
@@ -23,7 +26,27 @@ public class Sistema extends javax.swing.JFrame {
         initComponents();
          this.setLocationRelativeTo(null);
     }
-
+    public void listarClientes(){
+        List<Cliente> listarclientes = cliente.listarClientes();
+        modelo = (DefaultTableModel) tableCliente.getModel();
+        Object [] obj = new Object[6];
+        for (int i = 0; i < listarclientes.size(); i++) {
+            obj[0]=listarclientes.get(i).getId();
+            obj[1]=listarclientes.get(i).getDni();
+            obj[2]=listarclientes.get(i).getNombre();
+            obj[3]=listarclientes.get(i).getTelefono();
+            obj[4]=listarclientes.get(i).getDireccion();
+            obj[5]=listarclientes.get(i).getRazon();
+            modelo.addRow(obj);
+        }
+        tableCliente.setModel(modelo);
+    }
+    public void limpiarTable(){
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            modelo.removeRow(i);
+            i=i-1;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -153,6 +176,11 @@ public class Sistema extends javax.swing.JFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Clientes.png"))); // NOI18N
         jButton2.setText("Clientes");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/proveedor.png"))); // NOI18N
         jButton3.setText("Proveedor");
@@ -399,16 +427,17 @@ public class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "DNI/RUC", "NOMBRE", "TELEFONO", "DIRECCION", "RAZON SOCIAL"
+                "ID", "DNI/RUC", "NOMBRE", "TELEFONO", "DIRECCION", "RAZON SOCIAL"
             }
         ));
         jScrollPane2.setViewportView(tableCliente);
         if (tableCliente.getColumnModel().getColumnCount() > 0) {
-            tableCliente.getColumnModel().getColumn(0).setPreferredWidth(50);
-            tableCliente.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tableCliente.getColumnModel().getColumn(2).setPreferredWidth(50);
-            tableCliente.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tableCliente.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tableCliente.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tableCliente.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tableCliente.getColumnModel().getColumn(3).setPreferredWidth(50);
             tableCliente.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tableCliente.getColumnModel().getColumn(5).setPreferredWidth(80);
         }
 
         btnEditarCliente.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
@@ -463,7 +492,9 @@ public class Sistema extends javax.swing.JFrame {
                                 .addComponent(txtNombreCliente)
                                 .addComponent(txtTelefonoCliente)
                                 .addComponent(txtDireccionCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)))))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(136, 136, 136)
                 .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -499,7 +530,7 @@ public class Sistema extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel15)
                             .addComponent(txtRazonCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnGuardarCliente)
                             .addComponent(btnEditarCliente)))
@@ -931,6 +962,13 @@ public class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Los campos están vacíos");
         }
     }//GEN-LAST:event_btnGuardarClienteActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        limpiarTable();
+        listarClientes();
+       jTabbedPane1.setSelectedIndex(1);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

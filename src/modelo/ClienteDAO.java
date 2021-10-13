@@ -6,6 +6,8 @@
 package modelo;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,6 +18,7 @@ public class ClienteDAO {
     Conexion cn = new Conexion();
     Connection con;
     PreparedStatement ps;
+    ResultSet rs;
     public boolean registrarCliente(Cliente cl){
         String sql = "insert into clientes(dni,nombre,telefono,direccion,razon) values(?,?,?,?,?)";
         try {
@@ -38,5 +41,27 @@ public class ClienteDAO {
             }
         }
         return true;
+    }
+    public List<Cliente> listarClientes(){
+        List<Cliente> listaCl = new ArrayList<>();
+        String sql = "select * from clientes";
+        try {
+            con=cn.getConnection();
+            ps=con.prepareStatement(sql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                Cliente cl =  new Cliente();
+                cl.setId(rs.getInt("id"));
+                cl.setDni(rs.getString("dni"));
+                cl.setNombre(rs.getString("nombre"));
+                cl.setTelefono(rs.getString("telefono"));
+                cl.setDireccion(rs.getString("direccion"));
+                cl.setRazon(rs.getString("razon"));
+                listaCl.add(cl);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listaCl;
     }
 }
