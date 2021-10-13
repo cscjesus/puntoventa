@@ -8,6 +8,8 @@ package modelo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,15 +17,17 @@ import javax.swing.JOptionPane;
  * @author Lichi
  */
 public class ClienteDAO {
+
     Conexion cn = new Conexion();
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    public boolean registrarCliente(Cliente cl){
+
+    public boolean registrarCliente(Cliente cl) {
         String sql = "insert into clientes(dni,nombre,telefono,direccion,razon) values(?,?,?,?,?)";
         try {
             con = cn.getConnection();
-            ps=con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             ps.setString(1, cl.getDni());
             ps.setString(2, cl.getNombre());
             ps.setString(3, cl.getTelefono());
@@ -33,7 +37,7 @@ public class ClienteDAO {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
             return false;
-        }finally{
+        } finally {
             try {
                 con.close();
             } catch (SQLException e) {
@@ -42,15 +46,16 @@ public class ClienteDAO {
         }
         return true;
     }
-    public List<Cliente> listarClientes(){
+
+    public List<Cliente> listarClientes() {
         List<Cliente> listaCl = new ArrayList<>();
         String sql = "select * from clientes";
         try {
-            con=cn.getConnection();
-            ps=con.prepareStatement(sql);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                Cliente cl =  new Cliente();
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Cliente cl = new Cliente();
                 cl.setId(rs.getInt("id"));
                 cl.setDni(rs.getString("dni"));
                 cl.setNombre(rs.getString("nombre"));
@@ -63,5 +68,24 @@ public class ClienteDAO {
             System.out.println(e);
         }
         return listaCl;
+    }
+
+    public boolean eliminarCliente(int id) {
+        String sql = "delete from clientes where id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+            }
+        }
     }
 }
